@@ -1,0 +1,6 @@
+namespace Pokedex;
+
+class PokedexManager
+{
+
+}
