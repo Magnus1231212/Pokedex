@@ -16,7 +16,7 @@ class User
 
     public static void Login(string username, string password)
     {
-        var users = CSVManager.ReadCSV<User>("users.csv");
+        List<User> users = CSVManager.ReadCSV<User>("users.csv");
         var user = users.FirstOrDefault(u => u.Username == username && u.Password == password);
 
         if (user != null)
@@ -29,6 +29,39 @@ class User
         {
             Console.WriteLine("Invalid username or password.");
         }
+    }
+
+    public static void register(string username, string password)
+    {
+        List<User> users = CSVManager.ReadCSV<User>("users.csv");
+        var user = users.FirstOrDefault(u => u.Username == username);
+
+        if (user != null)
+        {
+            Console.WriteLine("Username already exists.");
+            return;
+        }
+
+        users.Add(new User(username, HashPassword(password)));
+        CSVManager.WriteCSV<User>("users.csv", users);
+        Console.WriteLine("User registered successfully.");
+    }
+
+    public static void Logout()
+    {
+        Program.LoggedIn = false;
+        Program.Username = string.Empty;
+    }
+
+    public static bool isLoggedin()
+    {
+        if (!Program.LoggedIn)
+        {
+            Console.WriteLine("You must be logged in to access this feature.");
+            Program.waitforinput();
+            return false;
+        }
+        return true;
     }
 
     public static string HashPassword(string password)
