@@ -4,58 +4,89 @@ class CSVManager
 {
     public static void WriteCSV<T>(string file, List<T> data)
     {
-        using (var writer = new StreamWriter(Path.Combine(Program.dataPath + file)))
+        try
         {
-            foreach (var obj in data)
+            using (var writer = new StreamWriter(Path.Combine(Program.dataPath + file)))
             {
-                writer.WriteLine(ParseToCSV(obj));
+                foreach (var obj in data)
+                {
+                    writer.WriteLine(ParseToCSV(obj));
+                }
             }
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("File not found.");
         }
     }
 
     public static List<T> ReadCSV<T>(string file)
     {
         List<T> data = new List<T>();
-
-        using (var reader = new StreamReader(Path.Combine(Program.dataPath + file)))
+        try
         {
-            while (!reader.EndOfStream)
+            using (var reader = new StreamReader(Path.Combine(Program.dataPath + file)))
             {
-                var line = reader.ReadLine();
-                var values = line.Split(',');
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
 
-                var obj = Activator.CreateInstance(typeof(T), values);
-                data.Add((T)obj);
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        values[i] = values[i].Trim();
+                    }
+
+                    var obj = Activator.CreateInstance(typeof(T), values);
+                    data.Add((T)obj);
+                }
             }
         }
-
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("File not found.");
+        }
         return data;
     }
 
     public static string ParseToCSV<T>(T obj)
     {
-        var properties = typeof(T).GetProperties();
-        var values = properties.Select(p => p.GetValue(obj)?.ToString());
-        return string.Join(",", values);
+        try
+        {
+            var properties = typeof(T).GetProperties();
+            var values = properties.Select(p => p.GetValue(obj)?.ToString());
+            return string.Join(",", values);
+        }
+        catch (Exception)
+        {
+            return string.Empty;
+        }
     }
 
     public static List<T> SearchCSV<T>(string file, string query)
     {
         List<T> results = new List<T>();
 
-        using (var reader = new StreamReader(Path.Combine(Program.dataPath + file)))
+        try
         {
-            while (!reader.EndOfStream)
+            using (var reader = new StreamReader(Path.Combine(Program.dataPath + file)))
             {
-                var line = reader.ReadLine();
-                var values = line.Split(',');
-
-                if (values.Contains(query))
+                while (!reader.EndOfStream)
                 {
-                    var obj = Activator.CreateInstance(typeof(T), values);
-                    results.Add((T)obj);
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+
+                    if (values.Contains(query))
+                    {
+                        var obj = Activator.CreateInstance(typeof(T), values);
+                        results.Add((T)obj);
+                    }
                 }
             }
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("File not found.");
         }
         return results;
     }
