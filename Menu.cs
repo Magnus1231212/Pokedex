@@ -58,6 +58,7 @@ internal class Menu
                 try
                 {
                     ResetPage();
+                    Console.Clear();
                     Cases[choice - 1]();
                 }
                 catch (Exception e)
@@ -101,7 +102,7 @@ internal class Menu
     }
 
     // Sub Menu Builder
-    public static void buildSub(string Title, string[] Options, Action[] Cases)
+    public static void buildSub(string Title, string[] Options, Action[] Cases, bool enableSelection = true)
     {
         int choice = -1;
         do
@@ -110,7 +111,8 @@ internal class Menu
 
             Console.Clear();
 
-            Console.WriteLine("Please select an option: \n");
+            if (enableSelection)
+                Console.WriteLine("Please select an option: \n");
 
             int index = 0;
             foreach (string Option in GetPage(Options, Page, 1))
@@ -138,12 +140,13 @@ internal class Menu
                 choice = -1;
             }
 
-            if (choice >= 1 && choice <= MaxSubOptions && choice <= Options.Length)
+            if (choice >= 1 && choice <= MaxSubOptions && choice <= Options.Length && enableSelection)
             {
                 Console.Clear();
                 try
                 {
                     ResetPage();
+                    Console.Clear();
                     Cases[choice - 1]();
                 }
                 catch (Exception e)
