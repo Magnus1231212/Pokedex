@@ -31,26 +31,14 @@ class CSVManager
     public static void WriteCSV(string path)
     {
     }
-}
 
-enum PokemonType
-{
-    Normal,
-    Fire,
-    Water,
-    Electric,
-    Grass,
-    Ice,
-    Fighting,
-    Poison,
-    Ground,
-    Flying,
-    Psychic,
-    Bug,
-    Rock,
-    Ghost,
-    Dragon,
-    Dark,
-    Steel,
-    Fairy
+    public static void ParseCSV(string path)
+    {
+    }
+
+    public static object SearchCSV(string path, string query)
+    {
+
+        return null;
+    }
 }
