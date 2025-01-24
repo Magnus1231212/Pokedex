@@ -18,12 +18,22 @@ internal class Menu
     }
 
     // Main Menu Builder
-    public static void buildMain(string[] Options, Action[] Cases, string Title)
+    public static void buildMain(string[] Options, Action[] Cases, string Title, string[]? customText = null)
     {
         int choice = -1;
         do
         {
             Console.Title = $"{ProjectTitle} - {Title}";
+
+            Console.Clear();
+
+            if (customText != null)
+            {
+                foreach (string text in customText)
+                {
+                    Console.WriteLine(text);
+                }
+            }
 
             Console.WriteLine("Please select an option: \n");
 
@@ -102,7 +112,7 @@ internal class Menu
     }
 
     // Sub Menu Builder
-    public static void buildSub(string Title, string[] Options, Action[] Cases, bool enableSelection = true)
+    public static void buildSub(string Title, string[] Options, Action[] Cases, bool enableSelection = true, string[]? customText = null)
     {
         int choice = -1;
         do
@@ -110,6 +120,14 @@ internal class Menu
             Console.Title = $"{ProjectTitle} - {Title}";
 
             Console.Clear();
+
+            if (customText != null)
+            {
+                foreach (string text in customText)
+                {
+                    Console.WriteLine(text);
+                }
+            }
 
             if (enableSelection)
                 Console.WriteLine("Please select an option: \n");
@@ -176,6 +194,7 @@ internal class Menu
             }
             else if (choice == 0)
             {
+                ResetPage();
                 break;
             }
             else
