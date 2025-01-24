@@ -15,6 +15,12 @@ class Program
         // Check for data files
         CheckForDataFiles();
 
+        // Setup first user
+        if (CSVManager.ReadCSV<User>("users.csv").Count == 0)
+        {
+            SubMenus.Register();
+        }
+
         // Main menu
         do
         {
