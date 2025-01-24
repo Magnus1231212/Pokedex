@@ -18,39 +18,79 @@ class SubMenus
 
     public static void SeeAllPokemons()
     {
-        var pokemons = CSVManager.ReadCSV<Pokemon>("pokemons.csv");
+        try
+        {
+            var pokemons = CSVManager.ReadCSV<Pokemon>("pokemons.csv");
+            string[] customText = new string[1];
 
-        // Name of submenu
-        string name = "Actions 1";
+            if (pokemons.Count == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("No Pokemons found.");
+                Program.waitforinput();
+                return;
+            }
 
-        // Options to be displayed
-        string[] options = pokemons.Select(p => $"Name: {p.Name} ").ToArray();
+            Console.Clear();
+            customText[0] = "All Pokemons:\n";
 
-        // Array of actions to be called
-        Action[] cases = { };
+            // Name of submenu
+            string name = "See all Pokemons";
 
-        // Build submenu
-        Menu.buildSub(name, options, cases, false);
+            // Options to be displayed
+            string[] options = pokemons.Select(p => $"Name: {p.Name} Type: {p.Type} Strength: {p.StrengthLevel}").ToArray();
+
+            // Array of actions to be called
+            Action[] cases = { };
+
+            // Build submenu
+            Menu.buildSub(name, options, cases, false, customText);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            Console.ReadKey();
+        }
     }
 
     public static void SearchPokemon()
     {
-        Console.WriteLine("Enter the name of the Pokemon you want to search:");
-        string pokename = Console.ReadLine() ?? string.Empty;
+        try
+        {
+            Console.WriteLine("Enter the name of the Pokemon you want to search:");
+            string pokename = Console.ReadLine() ?? string.Empty;
 
-        var pokemons = CSVManager.SearchCSV<Pokemon>("pokemons.csv", pokename);
+            var pokemons = CSVManager.SearchCSV<Pokemon>("pokemons.csv", pokename);
+            string[] customText = new string[1];
 
-        // Name of submenu
-        string name = "Search Pokemon";
+            if (pokemons.Count == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("No Pokemon found.");
+                Program.waitforinput();
+                return;
+            }
 
-        // Options to be displayed
-        string[] options = pokemons.Select(p => $"Name: {p.Name} ").ToArray();
+            Console.Clear();
+            customText[0] = "Pokemon found:\n";
 
-        // Array of actions to be called
-        Action[] cases = { };
+            // Name of submenu
+            string name = "Search Pokemon";
 
-        // Build submenu
-        Menu.buildSub(name, options, cases, false);
+            // Options to be displayed
+            string[] options = pokemons.Select(p => $"Name: {p.Name} Type: {p.Type} Strength: {p.StrengthLevel}").ToArray();
+
+            // Array of actions to be called
+            Action[] cases = { };
+
+            // Build submenu
+            Menu.buildSub(name, options, cases, false, customText);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            Console.ReadKey();
+        }
     }
 
     public static void EditPokedex()
@@ -58,27 +98,24 @@ class SubMenus
         if (!User.isLoggedin())
             return;
 
-        Console.WriteLine("Enter the name of the Pokemon you want to edit:");
-        string pokename = Console.ReadLine() ?? string.Empty;
+        // Name of submenu
+        string name = "Edit Pokedex";
 
-        var pokemons = CSVManager.SearchCSV<Pokemon>("pokemons.csv", pokename);
+        // Options to be displayed
+        string[] options = {
+                "Add Pokemon",
+                "Edit Pokemon",
+                "Delete Pokemon",
+            };
 
-        if (pokemons.Count == 0)
-        {
-            Console.WriteLine("Pokemon not found.");
-            return;
-        }
+        // Array of actions to be called
+        Action[] cases = {
+                () => { PokedexManager.UserAddPokemon(); },
+                () => { PokedexManager.UserEditPokemon(); },
+                () => { PokedexManager.UserDeletePokemon(); }
+            };
 
-        Console.WriteLine("Enter the new name of the Pokemon:");
-        string newname = Console.ReadLine() ?? string.Empty;
-
-        Console.WriteLine("Enter the new type of the Pokemon:");
-        string newtype = Console.ReadLine() ?? string.Empty;
-
-        var pokemon = pokemons.First();
-        pokemon.Name = newname;
-        pokemon.Type = newtype;
-
-        CSVManager.WriteCSV("pokemons.csv", pokemons);
+        // Build submenu
+        Menu.buildSub(name, options, cases);
     }
 }
