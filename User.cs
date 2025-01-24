@@ -27,6 +27,7 @@ class User
         }
         else
         {
+            Console.Clear();
             Console.WriteLine("Invalid username or password.");
         }
     }
@@ -43,7 +44,7 @@ class User
         }
 
         users.Add(new User(username, HashPassword(password)));
-        CSVManager.WriteCSV<User>("users.csv", users);
+        CSVManager.WriteCSV("users.csv", users);
         Console.WriteLine("User registered successfully.");
     }
 
