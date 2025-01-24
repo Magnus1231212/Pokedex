@@ -5,24 +5,30 @@ class Program
     public static bool Exit = false;
     public static bool LoggedIn = false;
     public static string dataPath = Path.Combine(Directory.GetCurrentDirectory(), "data/");
-    public static string Username { get; set; }
+    public static string? Username { get; set; }
 
     static void Main(string[] args)
     {
         // Initialize the menu
         Menu.Initialize("Pokedex", true, 7, 7);
 
+        // Check for data files
+        CheckForDataFiles();
+
         // Main menu
         do
         {
             Console.Clear();
+
+            string[] customText = new string[1];
+
             if (LoggedIn)
             {
-                Console.WriteLine($"Hey, {Username}! Welcome to the Pokedex!\n");
+                customText[0] = $"Hey, {Username}! Welcome to the Pokedex!\n";
             }
             else
             {
-                Console.WriteLine("Welcome to the Pokedex!\n");
+                customText[0] = "Welcome to the Pokedex!\n";
             }
 
             // Name of the project
@@ -45,7 +51,7 @@ class Program
                 };
 
             // Build main menu
-            Menu.buildMain(options, cases, Title);
+            Menu.buildMain(options, cases, Title, customText);
 
         } while (!Exit);
 
@@ -55,5 +61,24 @@ class Program
     {
         Console.WriteLine("\nPress any key to continue...");
         Console.ReadKey();
+    }
+
+    public static void CheckForDataFiles()
+    {
+
+        if (!Directory.Exists(dataPath))
+        {
+            Directory.CreateDirectory(dataPath);
+        }
+
+        if (!File.Exists(Path.Combine(dataPath, "users.csv")))
+        {
+            File.Create(Path.Combine(dataPath, "users.csv")).Dispose();
+        }
+
+        if (!File.Exists(Path.Combine(dataPath, "pokemons.csv")))
+        {
+            File.Create(Path.Combine(dataPath, "pokemons.csv")).Dispose();
+        }
     }
 }
