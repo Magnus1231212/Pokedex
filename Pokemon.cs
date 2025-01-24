@@ -9,7 +9,7 @@ class Pokemon
     public PokemonType Type { get; set; }
     public int StrengthLevel { get; set; }
 
-    public Pokemon(string id, string name, PokemonType type, string strengthLevel)
+    public Pokemon(string id, string name, string type, string strengthLevel)
     {
         var _id = 0;
         var _strengthLevel = 0;
@@ -18,7 +18,7 @@ class Pokemon
 
         ID = _id;
         Name = name;
-        Type = type;
+        Type = (PokemonType)Enum.Parse(typeof(PokemonType), type ?? string.Empty);
         StrengthLevel = _strengthLevel;
     }
 }
