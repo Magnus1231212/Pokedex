@@ -38,13 +38,15 @@ class CSVManager
                     }
 
                     var obj = Activator.CreateInstance(typeof(T), values);
-                    data.Add((T)obj);
+                    if (obj != null)
+                        data.Add((T)obj);
+
                 }
             }
         }
-        catch (FileNotFoundException)
+        catch (Exception e)
         {
-            Console.WriteLine("File not found.");
+            Console.WriteLine(e);
         }
         return data;
     }
@@ -76,18 +78,20 @@ class CSVManager
                     var line = reader.ReadLine();
                     var values = line.Split(',');
 
-                    if (values.Contains(query))
+                    if (values[1].Contains(query) || values[2].Contains(query))
                     {
                         var obj = Activator.CreateInstance(typeof(T), values);
-                        results.Add((T)obj);
+                        if (obj != null)
+                            results.Add((T)obj);
                     }
                 }
             }
         }
-        catch (FileNotFoundException)
+        catch (Exception e)
         {
-            Console.WriteLine("File not found.");
+            Console.WriteLine(e);
         }
+
         return results;
     }
 }
