@@ -118,4 +118,19 @@ class SubMenus
         // Build submenu
         Menu.buildSub(name, options, cases);
     }
+
+    public static void Register()
+    {
+        Console.Clear();
+        Console.WriteLine("Register a new user\n");
+        Console.WriteLine("Enter your username:");
+        string username = Console.ReadLine() ?? string.Empty;
+
+        Console.WriteLine("Enter your password:");
+        string password = Console.ReadLine() ?? string.Empty;
+
+        User.Register(username, password);
+
+        Program.waitforinput();
+    }
 }
