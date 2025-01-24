@@ -31,11 +31,7 @@ class CSVManager
                 {
                     var line = reader.ReadLine();
                     var values = line.Split(',');
-
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        values[i] = values[i].Trim();
-                    }
+                    values = values.Select(v => v.Trim()).ToArray();
 
                     var obj = Activator.CreateInstance(typeof(T), values);
                     if (obj != null)
@@ -68,6 +64,7 @@ class CSVManager
     public static List<T> SearchCSV<T>(string file, string query)
     {
         List<T> results = new List<T>();
+        query = query.ToLower();
 
         try
         {
@@ -77,8 +74,9 @@ class CSVManager
                 {
                     var line = reader.ReadLine();
                     var values = line.Split(',');
+                    values = values.Select(v => v.Trim()).ToArray();
 
-                    if (values[1].Contains(query) || values[2].Contains(query))
+                    if (values[1].ToLower().Contains(query) || values[2].ToLower().Contains(query))
                     {
                         var obj = Activator.CreateInstance(typeof(T), values);
                         if (obj != null)
@@ -90,6 +88,7 @@ class CSVManager
         catch (Exception e)
         {
             Console.WriteLine(e);
+            Console.ReadKey();
         }
 
         return results;
