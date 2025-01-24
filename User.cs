@@ -32,7 +32,7 @@ class User
         }
     }
 
-    public static void register(string username, string password)
+    public static void Register(string username, string password)
     {
         List<User> users = CSVManager.ReadCSV<User>("users.csv");
         var user = users.FirstOrDefault(u => u.Username == username);

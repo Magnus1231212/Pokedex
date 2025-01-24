@@ -88,10 +88,10 @@ class PokedexManager
     {
         Console.Clear();
 
-        Console.Write("Enter the name of the Pokemon to edit: ");
-        string sName = Console.ReadLine() ?? string.Empty;
+        Console.Write("Enter the ID of the Pokemon to edit: ");
+        string sID = Console.ReadLine() ?? string.Empty;
 
-        var pokemons = CSVManager.SearchCSV<Pokemon>("pokemons.csv", sName);
+        var pokemons = CSVManager.SearchCSV<Pokemon>("pokemons.csv", sID);
 
         if (pokemons.Count == 0)
         {
@@ -102,16 +102,16 @@ class PokedexManager
         Console.Clear();
         Console.WriteLine("Edit a Pokemon\n");
 
-        Console.Write("ID: ");
+        Console.Write("New ID: ");
         string id = Console.ReadLine() ?? string.Empty;
 
-        Console.Write("Name: ");
+        Console.Write("New Name: ");
         string name = Console.ReadLine() ?? string.Empty;
 
-        Console.Write("Type: ");
+        Console.Write("New Type: ");
         string type = Console.ReadLine() ?? string.Empty;
 
-        Console.Write("Strength Level: ");
+        Console.Write("New Strength Level: ");
         string strengthLevel = Console.ReadLine() ?? string.Empty;
 
         if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(type) || string.IsNullOrEmpty(strengthLevel))
@@ -124,7 +124,8 @@ class PokedexManager
 
         try
         {
-            EditPokemon(name, pokemon);
+            int.TryParse(sID, out int eID);
+            EditPokemon(eID, pokemon);
             Console.WriteLine("Pokemon edited successfully.");
         }
         catch (Exception)
