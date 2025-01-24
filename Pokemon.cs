@@ -1,13 +1,15 @@
+using Pokedex.Enums;
+
 namespace Pokedex;
 
 class Pokemon
 {
     public int ID { get; set; }
     public string Name { get; set; }
-    public string Type { get; set; }
+    public PokemonType Type { get; set; }
     public int StrengthLevel { get; set; }
 
-    public Pokemon(string id, string name, string type, string strengthLevel)
+    public Pokemon(string id, string name, PokemonType type, string strengthLevel)
     {
         var _id = 0;
         var _strengthLevel = 0;
